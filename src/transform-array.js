@@ -1,40 +1,27 @@
 module.exports = function transform(arr) {
     if (!Array.isArray(arr)) throw new Error();
-    let transformArray = arr.reduce((acc, elm, index, array) => {
-        if (elm === '--double-next') {
-            if (array[index + 1]) acc.push(array[index + 1]);
-        } else {
-            acc.push(elm);
-        }
-        return acc;
-    }, []);
+    if (arr.length === 0) return arr;
 
-    transformArray = transformArray.reduce((acc, elm, index, array) => {
-        if (elm === '--double-prev') {
-            if (array[index - 1]) acc.push(array[index - 1]);
-        } else {
-            acc.push(elm);
-        }
-        return acc;
-    }, []);
-   
-    transformArray = transformArray.reduce((acc, elm, index, array) => {
-        if (elm === '--discard-prev') {
-            if (array[index - 1]) acc.slice(index - 1, 1);
-        } else {
-            acc.push(elm);
-        }
-        return acc;
-    }, []);
+    const transformArray = [];
 
-    transformArray = transformArray.reduce((acc, elm, index, array) => {
-        if (elm === '--discard-next') {
-            if (array[index + 1]) array.slice(index + 1, 1);
-        } else {
-            acc.push(elm);
+    for (let i = 0; i < arr.length; i++) {
+        switch (arr[i]) {
+            case '--discard-next':
+                i++;
+                break;
+            case '--discard-prev':
+                transformArray.pop();
+                break;
+            case '--double-next':
+                if ((i + 1) !== arr.length) transformArray.push(arr[i + 1]);
+                break;
+            case '--double-prev':
+                if ((i - 1) >= 0) transformArray.push(arr[i - 1]);  
+                break;
+            default:
+                transformArray.push(arr[i]);
         }
-        return acc;
-    }, []);
+    }
 
     return transformArray;
 }
