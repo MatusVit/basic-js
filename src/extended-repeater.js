@@ -1,17 +1,14 @@
 module.exports = function repeater(str, options) {
-    let string = String(str); 
-    let [repeatTimes = 1,
+    let string = String(str);
+    let {repeatTimes = 1,
         separator = '+',
         addition = '',
-        additionRepeatTimes = 0,
-        additionSeparator = ''] = options;
+        additionRepeatTimes = 1,
+        additionSeparator = '|'
+     } = options;
 
-        let result = '';
-        
-        for (let i = 0; i < additionRepeatTimes; i++) {
-            
-        }
+    let arr = new Array(additionRepeatTimes).fill(String(addition));
+    let element = `${string}${arr.join(additionSeparator)}`;
 
-    return result;
+    return new Array(repeatTimes).fill(element).join(separator);
 };
-  
